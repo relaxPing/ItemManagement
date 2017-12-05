@@ -12,9 +12,8 @@
 <body>
 <!-- 头部 -->
 <div class="jumbotron" style="height: 120px">
-    <div class="container">
-        <h2>西游寄商品仓库</h2>
-
+    <div class="container form-inline">
+        <h2>西游寄商品仓库     <a href="?logout=1" class="btn btn-danger btn-sm" style="margin: 0;100px">登出</a></h2>
     </div>
 </div>
 <!--中间区域内容-->
@@ -43,3 +42,26 @@
 @show
 </body>
 </html>
+
+<?php
+session_start();
+
+if(isset($_GET['logout'])){
+    $logout=$_GET['logout'];
+    if($logout ==1)
+        $_SESSION['login']=0;
+}
+
+
+if(isset($_SESSION['login'])){
+    if($_SESSION['login']!=39)
+    {
+        header("Location:login");
+        exit;
+    }
+}else{
+    header("Location:login");
+    exit;
+}
+
+?>

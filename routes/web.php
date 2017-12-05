@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('dashboard', function () {
+    return view('welcome');
+});
 
 Route::any('items',['uses'=>'ItemsController@items']);
 Route::any('record_take',['uses'=>'ItemsController@record_take']);
@@ -23,3 +26,4 @@ Route::group(['middleware'=>'web'],function (){
     Route::any('add',['uses'=>'ItemsController@add']);
     Route::any('take',['uses'=>'ItemsController@take']);
 });
+Route::any('login',['uses'=>'loginController@login']);
