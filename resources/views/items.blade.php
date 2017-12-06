@@ -1,3 +1,7 @@
+<!--
+用于展示商品列表
+-->
+
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->

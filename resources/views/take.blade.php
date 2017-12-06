@@ -1,3 +1,7 @@
+<!--
+用于从已存在商品中提取货物
+-->
+
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->

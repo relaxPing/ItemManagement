@@ -1,3 +1,7 @@
+<!--
+用于建立新的商品
+-->
+
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->

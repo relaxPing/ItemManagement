@@ -1,3 +1,6 @@
+<!--
+dashboard 这个是主目录
+-->
 @extends('common/layout')
 @section('body')
 

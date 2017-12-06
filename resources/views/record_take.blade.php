@@ -1,3 +1,9 @@
+<!--
+
+用于展示用户提取记录
+
+-->
+
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->

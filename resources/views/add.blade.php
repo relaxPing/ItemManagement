@@ -1,3 +1,7 @@
+<!--
+用于增加已建立的商品的数量
+-->
+
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->

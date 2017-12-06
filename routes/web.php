@@ -26,4 +26,8 @@ Route::group(['middleware'=>'web'],function (){
     Route::any('add',['uses'=>'ItemsController@add']);
     Route::any('take',['uses'=>'ItemsController@take']);
 });
+
 Route::any('login',['uses'=>'loginController@login']);
+
+//这个用于给用户展示商品列表
+Route::any('itemList',['uses'=>'ItemsController@itemList']);

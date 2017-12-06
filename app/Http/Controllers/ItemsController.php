@@ -54,6 +54,7 @@ class ItemsController extends Controller{
         }
         return view('create');
     }
+
     //商品列表
     public function items(Request $request){
         if($request->isMethod('POST')&& $request->input('Search')){
@@ -174,6 +175,24 @@ class ItemsController extends Controller{
         }
         return view('record_take',[
             'records'=>$records
+        ]);
+    }
+
+    //向用户展示的商品目录
+    public function itemList(Request $request){
+        if($request->isMethod('POST')&& $request->input('Search')){
+            if(array_key_exists('name',$request->input('Search'))){
+                $keywords = $request->input('Search')['name'];
+                $items = Items::where('name','like','%'.$keywords.'%')->Paginate(25);
+            }elseif (array_key_exists('num',$request->input('Search'))){
+                $keywords = $request->input('Search')['num'];
+                $items = Items::where('code','like','%'.$keywords.'%')->Paginate(25);
+            }
+        }else{
+            $items = Items::orderBy('created_at','desc')->Paginate(25);
+        }
+        return view('itemList',[
+            'items'=>$items
         ]);
     }
 }
