@@ -85,8 +85,11 @@
 </head>
 <body>
 <!-- 头部 -->
-<div class="top" style="width: auto;height: 200px;background-image: url(../public/logo-header.jpg);background-repeat:no-repeat;">
-
+<!--<div class="top" style="width: auto;height: 200px;background-image: url(../public/logo-header.jpg);background-repeat:no-repeat;">
+    <img src="../public/logo-header.jpg">
+</div>-->
+<div class="container">
+    <img src="../public/logo-header.jpg" style="width:100%;height: auto;">
 </div>
 
 <!--中间区域内容-->
@@ -99,14 +102,14 @@
                 <div class="input-group">
                     <form class="form-inline" method="post" action="">
                         {{csrf_field()}}
-                        <input class="form-control"  placeholder="通过商品名称查询" style="width: 300px" name="Search[name]">
+                        <input class="form-control"  placeholder="通过商品名称查询" style="width: 240px" name="Search[name]">
                         <button type="submit" class="btn btn-default">查询</button>
                     </form>
                 </div>
                 <div class="input-group" >
                     <form class="form-inline" method="post" action="">
                         {{csrf_field()}}
-                        <input class="form-control"  placeholder="通过商品号码查询" style="width: 300px" name="Search[num]">
+                        <input class="form-control"  placeholder="通过商品号码查询" style="width: 240px" name="Search[num]">
                         <button type="submit" class="btn btn-default">查询</button>
                     </form>
                 </div>
