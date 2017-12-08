@@ -93,7 +93,7 @@
 </div>
 
 <!--中间区域内容-->
-<div class="container" >
+<div class="container-fluid" >
 
     <!--查询条件-->
     <div class="panel panel-default">

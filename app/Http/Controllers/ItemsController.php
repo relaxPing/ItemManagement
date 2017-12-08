@@ -60,10 +60,10 @@ class ItemsController extends Controller{
         if($request->isMethod('POST')&& $request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];
-                $items = Items::where('name','like','%'.$keywords.'%')->Paginate(25);
+                $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }elseif (array_key_exists('num',$request->input('Search'))){
                 $keywords = $request->input('Search')['num'];
-                $items = Items::where('code','like','%'.$keywords.'%')->Paginate(25);
+                $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }
         }else{
             $items = Items::orderBy('created_at','desc')->Paginate(25);
@@ -175,6 +175,44 @@ class ItemsController extends Controller{
         }
         return view('record_take',[
             'records'=>$records
+        ]);
+    }
+
+    //商品修改
+    public function modify(Request $request,$code){
+        $item = Items::find($code);
+        if($request->isMethod('POST')){
+            //验证
+            $validator = \Validator::make($request->input(),[
+                'Items.name' => 'required',
+                'Items.price' => 'required',
+                'Items.quantity' => 'required|integer',
+                'Items.code' => 'required'
+            ],[
+                'required'=>':attribute 为必填项',
+                'integer'=>':attribute 必须为数字'
+            ],[
+                'Items.name' =>'商品名称',
+                'Items.price' => '价格',
+                'Items.code' =>'条码号',
+                'Items.quantity' => '商品数量'
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            //修改数据
+            $data = $request->input('Items');
+            $item -> code = $data['code'];
+            $item -> name = $data['name'];
+            $item -> quantity = $data['quantity'];
+            $item -> price = $data['price'];
+            if($item->save()){
+                return redirect('items')->with('success','修改成功');
+            }
+        }
+        return view('modify',[
+            'item'=>$item
         ]);
     }
 

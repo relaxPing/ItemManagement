@@ -17,7 +17,7 @@
     </div>
 </div>
 <!--中间区域内容-->
-<div class="container" >
+<div class="container-fluid" >
     <!--<button onclick="{location.href='http://www.qq.com'}">新增商品</button>-->
     @yield('body')
 
