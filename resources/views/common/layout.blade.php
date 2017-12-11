@@ -12,12 +12,12 @@
 <body>
 <!-- 头部 -->
 <div class="jumbotron" style="height: 120px">
-    <div class="container form-inline">
-        <h2>西游寄商品仓库     <a href="?logout=1" class="btn btn-danger btn-sm" style="margin: 0;100px">登出</a></h2>
+    <div class="container-fluid form-inline">
+        <h2 style="text-align: center">西游寄商品仓库     <a href="?logout=1" class="btn btn-danger btn-sm" style="margin: 0;100px">登出</a></h2>
     </div>
 </div>
 <!--中间区域内容-->
-<div class="container-fluid" >
+<div class="container-fluid">
     <!--<button onclick="{location.href='http://www.qq.com'}">新增商品</button>-->
     @yield('body')
 

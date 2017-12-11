@@ -4,7 +4,7 @@ dashboard 这个是主目录
 @extends('common/layout')
 @section('body')
 
-    <div style="height: 400px">
+    <div style="height: 400px;text-align: center">
         <div style="margin: 30px">
             <button onclick="locate('create')" class="btn btn-default btn-lg">新建商品</button>
         </div>

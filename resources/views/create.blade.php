@@ -8,7 +8,7 @@
 <button onclick="locate('.')" class="btn btn-basic btn-mid" style="margin: 10px 0px">返回首页</button>
 
 <!--新建商品-->
-<div class="panel panel-default" style="width: 800px">
+<div class="panel panel-default" style="width: 800px" >
     <div class="panel-heading">新建商品</div>
     <div class="panel-body">
         <form class="form-horizontal" method="post" action="">
@@ -23,6 +23,12 @@
                 <label class="control-label col-sm-2" for="price">单价(美元)：</label>
                 <div class="col-sm-10">
                     <input  class="form-control" id="price" name="Items[price]" value="{{old('Items')['price']}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="price">备注(选填)</label>
+                <div class="col-sm-10">
+                    <input  class="form-control" id="price" name="Items[priceComment]" value="{{old('Items')['priceComment']}}">
                 </div>
             </div>
             <div class="form-group">

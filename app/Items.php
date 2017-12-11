@@ -13,7 +13,7 @@ class Items extends Model{
     protected $primaryKey = 'code';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable =['name','price','code','quantity','id'];
+    public $fillable =['name','price','code','quantity','id','priceComment'];
     protected function getDataFormat(){
         return time();
     }

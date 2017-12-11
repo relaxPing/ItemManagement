@@ -207,6 +207,7 @@ class ItemsController extends Controller{
             $item -> name = $data['name'];
             $item -> quantity = $data['quantity'];
             $item -> price = $data['price'];
+            $item -> priceComment = $data['priceComment'];
             if($item->save()){
                 return redirect('items')->with('success','修改成功');
             }

@@ -56,6 +56,7 @@
             <th>提取客户</th>
             <th>提取时间</th>
             <th>操作员</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -68,6 +69,7 @@
             <td>{{$record->customer}}</td>
             <td>{{date('Y-m-d',strtotime($record->created_at))}}</td>
             <td>{{$record->operator}}</td>
+            <td><a href="{{ url('modifyRecord',['id'=>$record->id])}}">修改</a></td>
         </tr>
         @endforeach
         </tbody>

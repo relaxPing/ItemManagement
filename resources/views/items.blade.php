@@ -51,6 +51,7 @@
                 <th>商品号码</th>
                 <th>商品数量</th>
                 <th>商品单价(美元)</th>
+                <th>价格备注</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -61,6 +62,7 @@
                 <td>{{$item->code}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->price}}</td>
+                <td>{{$item->priceComment}}</td>
                 <td><a href="{{ url('modify',['code'=>$item->code ])}}">修改/查看</a></td>
             </tr>
             @endforeach
