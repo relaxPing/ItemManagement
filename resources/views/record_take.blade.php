@@ -7,7 +7,7 @@
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->
-@include('common\back')
+@include('common/back')
 
 <!--查询条件-->
 <div class="panel panel-default">

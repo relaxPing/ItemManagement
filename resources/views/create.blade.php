@@ -5,7 +5,7 @@
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->
-@include('common\back')
+@include('common/back')
 
 <!--新建商品-->
 <div class="panel panel-default" style="width: 800px" >
