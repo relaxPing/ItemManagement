@@ -14,10 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('dashboard', function () {
-    return view('welcome');
-});
-
+Route::get('dashboard', ['uses'=>'DashboardController@dashboard']);
+//商品展示页面
 Route::any('items',['uses'=>'ItemsController@items']);
 Route::any('record_take',['uses'=>'ItemsController@record_take']);
 

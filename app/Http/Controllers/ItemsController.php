@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use App\Items;
 use App\Records;
 use Illuminate\Http\Request;
+use Session;
 
 class ItemsController extends Controller{
     //新建商品
@@ -57,7 +58,7 @@ class ItemsController extends Controller{
 
     //商品列表
     public function items(Request $request){
-        if($request->isMethod('POST')&& $request->input('Search')){
+        /*if($request->isMethod('POST')&& $request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];
                 $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
@@ -67,6 +68,35 @@ class ItemsController extends Controller{
             }
         }else{
             $items = Items::orderBy('created_at','desc')->Paginate(25);
+        }*/
+
+
+        $items = Items::orderBy('created_at','desc')->Paginate(25);
+        if(Session::has('name')){
+            $keywords = Session::get('name');
+            $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if(Session::has('num')){
+            $keywords = Session::get('num');
+            $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if($request->input('Search')){
+            if(array_key_exists('name',$request->input('Search'))){
+                $keywords = $request->input('Search')['name'];
+                Session::put('name',$keywords);
+                if(Session::has('num')){
+                    Session::forget('num');
+                }
+                $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
+            if(array_key_exists('num',$request->input('Search'))){
+                $keywords = $request->input('Search')['num'];
+                Session::put('num',$keywords);
+                if(Session::has('name')){
+                    Session::forget('name');
+                }
+                $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
         }
 
         return view('items',[
@@ -159,7 +189,7 @@ class ItemsController extends Controller{
 
     //商品提取记录
     public function record_take(Request $request){
-        if($request->isMethod('POST')&& $request->input('Search')){
+        /*if($request->isMethod('POST')&& $request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];
                 $records = Records::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
@@ -172,6 +202,54 @@ class ItemsController extends Controller{
             }
         }else{
             $records = Records::orderBy('created_at','desc')->Paginate(25);
+        }*/
+        $records = Records::orderBy('created_at','desc')->Paginate(25);
+        if(Session::has('name')){
+            $keywords = Session::get('name');
+            $records = Records::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if(Session::has('num')){
+            $keywords = Session::get('num');
+            $records = Records::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if(Session::has('customer')){
+            $keywords = Session::get('customer');
+            $records = Records::where('customer','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if($request->input('Search')){
+            if(array_key_exists('name',$request->input('Search'))){
+                $keywords = $request->input('Search')['name'];
+                Session::put('name',$keywords);
+                if(Session::has('num')){
+                    Session::forget('num');
+                }
+                if(Session::has('customer')){
+                    Session::forget('customer');
+                }
+                $records = Records::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
+            if(array_key_exists('num',$request->input('Search'))){
+                $keywords = $request->input('Search')['num'];
+                Session::put('num',$keywords);
+                if(Session::has('name')){
+                    Session::forget('name');
+                }
+                if(Session::has('customer')){
+                    Session::forget('customer');
+                }
+                $records = Records::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
+            if(array_key_exists('customer',$request->input('Search'))){
+                $keywords = $request->input('Search')['customer'];
+                Session::put('customer',$keywords);
+                if(Session::has('name')){
+                    Session::forget('name');
+                }
+                if(Session::has('num')){
+                    Session::forget('num');
+                }
+                $records = Records::where('customer','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
         }
         return view('record_take',[
             'records'=>$records

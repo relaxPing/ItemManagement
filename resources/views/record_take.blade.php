@@ -7,7 +7,7 @@
 @extends('common/layout')
 @section('body')
 <!--返回首页按钮-->
-<button onclick="locate('.')" class="btn btn-basic btn-mid" style="margin: 10px 0px">返回首页</button>
+@include('common\back')
 
 <!--查询条件-->
 <div class="panel panel-default">
