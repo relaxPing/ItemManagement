@@ -62,14 +62,14 @@
         <tbody>
         @foreach($records as $record)
         <tr>
-            <td>{{$record->name}}</td>
-            <td>{{$record->code}}</td>
-            <td>{{$record->price}}</td>
-            <td>{{$record->quantity}}</td>
-            <td>{{$record->customer}}</td>
-            <td>{{date('Y-m-d',strtotime($record->created_at))}}</td>
-            <td>{{$record->operator}}</td>
-            <td><a href="{{ url('modifyRecord',['id'=>$record->id])}}">修改</a></td>
+            <td class="col-sm-4">{{$record->name}}</td>
+            <td class="col-sm-2">{{$record->code}}</td>
+            <td class="col-sm-1">{{$record->price}}</td>
+            <td class="col-sm-1">{{$record->quantity}}</td>
+            <td class="col-sm-1">{{$record->customer}}</td>
+            <td class="col-sm-1">{{date('Y-m-d',strtotime($record->created_at))}}</td>
+            <td class="col-sm-1">{{$record->operator}}</td>
+            <td class="col-sm-1"><a href="{{ url('modifyRecord',['id'=>$record->id])}}"><button class="btn btn-default">修改</button></a></td>
         </tr>
         @endforeach
         </tbody>

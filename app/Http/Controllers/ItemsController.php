@@ -257,8 +257,8 @@ class ItemsController extends Controller{
     }
 
     //商品修改
-    public function modify(Request $request,$code){
-        $item = Items::find($code);
+    public function modify(Request $request,$id){
+        $item = Items::find($id);
         if($request->isMethod('POST')){
             //验证
             $validator = \Validator::make($request->input(),[
@@ -295,9 +295,19 @@ class ItemsController extends Controller{
         ]);
     }
 
+    //商品删除
+    public function itemDelete($id){
+        $item = Items::find($id);
+        if($item->delete()){
+            return redirect('items')->with('success','成功删除');
+        }else{
+            return redirect('items')->with('error','删除失败，请返回首页刷新后重试或联系管理员');
+        }
+    }
+
     //向用户展示的商品目录
     public function itemList(Request $request){
-        if($request->isMethod('POST')&& $request->input('Search')){
+        /*if($request->isMethod('POST')&& $request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];
                 $items = Items::where('name','like','%'.$keywords.'%')->Paginate(25);
@@ -307,6 +317,33 @@ class ItemsController extends Controller{
             }
         }else{
             $items = Items::orderBy('created_at','desc')->Paginate(25);
+        }*/
+        $items = Items::orderBy('created_at','desc')->Paginate(25);
+        if(Session::has('c_item_name')){
+            $keywords = Session::get('c_item_name');
+            $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+        }
+        if(Session::has('c_item_num')){
+            $keywords = Session::get('c_item_num');
+            $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+        }
+        if($request->input('Search')){
+            if(array_key_exists('name',$request->input('Search'))){
+                $keywords = $request->input('Search')['name'];
+                Session::put('c_item_name',$keywords);
+                if(Session::has('c_item_num')){
+                    Session::forget('c_item_num');
+                }
+                $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+            }
+            if(array_key_exists('num',$request->input('Search'))){
+                $keywords = $request->input('Search')['num'];
+                Session::put('c_item_num',$keywords);
+                if(Session::has('c_item_name')){
+                    Session::forget('c_item_name');
+                }
+                $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+            }
         }
         return view('itemList',[
             'items'=>$items

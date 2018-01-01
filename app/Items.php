@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Items extends Model{
     protected $table = 'items';
-    protected $primaryKey = 'code';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable =['name','price','code','quantity','id','priceComment'];
+    //public $fillable =['name','price','code','quantity','id','priceComment'];
+    public $guarded = [];
     protected function getDataFormat(){
         return time();
     }

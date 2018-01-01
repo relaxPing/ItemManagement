@@ -58,12 +58,15 @@
         <tbody>
             @foreach($items as $item)
             <tr>
-                <td style="width:200px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{$item->name}}</td>
-                <td>{{$item->code}}</td>
-                <td>{{$item->quantity}}</td>
-                <td>{{$item->price}}</td>
-                <td>{{$item->priceComment}}</td>
-                <td><a href="{{ url('modify',['code'=>$item->code ])}}">修改/查看</a></td>
+                <td class="col-sm-4">{{$item->name}}</td>
+                <td class="col-sm-3">{{$item->code}}</td>
+                <td class="col-sm-1">{{$item->quantity}}</td>
+                <td class="col-sm-1">{{$item->price}}</td>
+                <td class="col-sm-1">{{$item->priceComment}}</td>
+                <td class="col-sm-2">
+                    <a href="{{ url('modify',['id'=>$item->id ])}}"><button class="btn btn-default">修改/查看</button></a>
+                    <a href="{{ url('itemDelete',['id'=>$item->id])}}" onclick="if(confirm('确定要执行删除吗？注意：删除操作不可恢复！')== false) return false"><button class="btn btn-danger">删除</button></a>
+                </td>
             </tr>
             @endforeach
         </tbody>

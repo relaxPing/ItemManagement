@@ -24,7 +24,9 @@ Route::group(['middleware'=>'web'],function (){
     Route::any('add',['uses'=>'ItemsController@add']);
     Route::any('take',['uses'=>'ItemsController@take']);
     //修改商品信息
-    Route::any('modify/{code}',['uses'=>'ItemsController@modify']);
+    Route::any('modify/{id}',['uses'=>'ItemsController@modify']);
+    //删除商品
+    Route::any('itemDelete/{id}',['uses'=>'ItemsController@itemDelete']);
     //修改提取记录
     Route::any('modifyRecord/{id}',['uses'=>'RecordsController@modifyRecord']);
 });
