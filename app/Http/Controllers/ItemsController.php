@@ -35,7 +35,7 @@ class ItemsController extends Controller{
                 'Items.code' => 'required'
             ],[
                 'required'=>':attribute 为必填项',
-                'integer'=>':attribute 必须为数字'
+                'integer'=>':attribute 必须为整数'
             ],[
                 'Items.name' =>'商品名称',
                 'Items.price' => '价格',
@@ -268,7 +268,7 @@ class ItemsController extends Controller{
                 'Items.code' => 'required'
             ],[
                 'required'=>':attribute 为必填项',
-                'integer'=>':attribute 必须为数字'
+                'integer'=>':attribute 必须为整数'
             ],[
                 'Items.name' =>'商品名称',
                 'Items.price' => '价格',
@@ -286,8 +286,10 @@ class ItemsController extends Controller{
             $item -> quantity = $data['quantity'];
             $item -> price = $data['price'];
             $item -> priceComment = $data['priceComment'];
+            $item -> discount = $data['discount'];
             if($item->save()){
-                return redirect('items')->with('success','修改成功');
+                /*return redirect('items')->with('success','修改成功');*/
+                echo "<script>history.go(-2)</script>";
             }
         }
         return view('modify',[
@@ -299,7 +301,8 @@ class ItemsController extends Controller{
     public function itemDelete($id){
         $item = Items::find($id);
         if($item->delete()){
-            return redirect('items')->with('success','成功删除');
+            /*return redirect('items')->with('success','成功删除');*/
+            echo "<script>history.go(-1)</script>";
         }else{
             return redirect('items')->with('error','删除失败，请返回首页刷新后重试或联系管理员');
         }

@@ -35,6 +35,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-sm-2" for="discount">折扣(选填)</label>
+                <div class="col-sm-10">
+                    <input  class="form-control" id="discount" name="Items[discount]"
+                            value="{{old('Items')['discount']?old('Items')['discount']:$item->discount}}">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-sm-2" for="quantity">数量：</label>
                 <div class="col-sm-10">
                     <input  class="form-control" id="quantity" name="Items[quantity]"

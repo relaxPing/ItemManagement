@@ -28,7 +28,13 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="price">备注(选填)</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="price" name="Items[priceComment]" value="{{old('Items')['priceComment']}}">
+                    <input  class="form-control" id="price" name="Items[priceComment]" value="{{old('Items')['priceComment']}}" placeholder="选填">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="price">折扣(选填)</label>
+                <div class="col-sm-10">
+                    <input  class="form-control" id="price" name="Items[discount]" value="{{old('Items')['discount']}}" placeholder="选填">
                 </div>
             </div>
             <div class="form-group">

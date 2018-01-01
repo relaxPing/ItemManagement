@@ -10,6 +10,9 @@
 <!--查询条件-->
 
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="{{url('create')}}"><button class="btn btn-default">新建商品</button></a>
+    </div>
     <div class="panel-body">
         <div class="form-inline">
             <div class="input-group">
@@ -58,10 +61,18 @@
         <tbody>
             @foreach($items as $item)
             <tr>
-                <td class="col-sm-4">{{$item->name}}</td>
+                <td class="col-sm-4">{{$item->name}}
+                @if($item->discount != null)
+                    <span class="label label-danger">{{$item->discount}} off</span>
+                @endif
+                </td>
                 <td class="col-sm-3">{{$item->code}}</td>
                 <td class="col-sm-1">{{$item->quantity}}</td>
-                <td class="col-sm-1">{{$item->price}}</td>
+                <td class="col-sm-1">{{$item->price}}</br>
+                    @if($item->discount != null)
+                    <span class="label label-danger">折扣价:{{$item->price - $item->discount}}</span>
+                    @endif
+                </td>
                 <td class="col-sm-1">{{$item->priceComment}}</td>
                 <td class="col-sm-2">
                     <a href="{{ url('modify',['id'=>$item->id ])}}"><button class="btn btn-default">修改/查看</button></a>

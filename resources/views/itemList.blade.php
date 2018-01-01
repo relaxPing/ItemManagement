@@ -139,10 +139,18 @@
             <tbody>
             @foreach($items as $item)
             <tr>
-                <td>{{$item->name}}</td>
+                <td>{{$item->name}}
+                    @if($item->discount != null)
+                    <span class="label label-danger">{{$item->discount}} off</span>
+                    @endif
+                </td>
                 <td>{{$item->code}}</td>
                 <td>{{$item->quantity}}</td>
-                <td>{{$item->price}}</td>
+                <td>{{$item->price}}</br>
+                    @if($item->discount != null)
+                    <span class="label label-danger">折扣价:{{$item->price - $item->discount}}</span>
+                    @endif
+                </td>
             </tr>
             @endforeach
             </tbody>
