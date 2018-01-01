@@ -123,8 +123,8 @@ class ItemsController extends Controller{
 
             $data = $request->input('Items');
             $itemCode = $data['code'];
-            if(Items::find($itemCode)){
-                $Item = Items::find($itemCode);
+            if(Items::where('code',$itemCode)){
+                $Item = Items::where('code',$itemCode)->first();
                 $Item -> quantity = $Item -> quantity + $data['quantity'];
                 if($Item ->save()){
                     return redirect('items')->with('success','商品录入成功');

@@ -48,4 +48,5 @@
 
 <!--错误信息-->
 @include('common/validator')
+@include('common/message')
 @stop
