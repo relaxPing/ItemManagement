@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Records extends Model{
     protected $table = 'records';
     public $timestamps = true;
-    public $fillable =['name','code','price','quantity','customer','operator'];
+    public $guarded = [];
     protected function getDataFormat(){
         return time();
     }

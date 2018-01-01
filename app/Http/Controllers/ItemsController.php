@@ -164,11 +164,16 @@ class ItemsController extends Controller{
 
             $data = $request->input('Items');
             $code = $data['code'];
-            if(Items::find($code)){
+            if(Items::where('code',$code)){
                 $data['name'] = Items::where('code',$code)->first()['name'];
                 $data['price'] = Items::where('code',$code)->first()['price'];
-                if(Records::create($data) && Items::find($code)){
-                    $Item = Items::find($code);
+                $data['discount'] = Items::where('code',$code)->first()['discount'];
+                //保存记录和商品数量修改之前先看看商品库存足不足
+                if(Items::where('code',$code)->first()['quantity']-$data['quantity']<0){
+                    return redirect()->back()->with('error','商品数量不足');
+                }
+                if(Records::create($data) && Items::where('code',$code)){
+                    $Item = Items::where('code',$code)->first();
                     $Item -> quantity = $Item -> quantity - $data['quantity'];
                     if($Item ->save()){
                         return redirect('record_take')->with('success','商品提取成功');

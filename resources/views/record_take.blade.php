@@ -11,6 +11,9 @@
 
 <!--查询条件-->
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <a href="{{url('take')}}"><button class="btn btn-default">提货</button></a>
+    </div>
     <div class="panel-body">
         <div class="form-inline">
             <div class="input-group">
@@ -64,7 +67,11 @@
         <tr>
             <td class="col-sm-4">{{$record->name}}</td>
             <td class="col-sm-2">{{$record->code}}</td>
-            <td class="col-sm-1">{{$record->price}}</td>
+            <td class="col-sm-1">{{$record->price}}</br>
+                @if($record->discount != null)
+                <span class="label label-danger">折扣价:{{$record->price - $record->discount}}</span>
+                @endif
+            </td>
             <td class="col-sm-1">{{$record->quantity}}</td>
             <td class="col-sm-1">{{$record->customer}}</td>
             <td class="col-sm-1">{{date('Y-m-d',strtotime($record->created_at))}}</td>
