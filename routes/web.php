@@ -38,3 +38,9 @@ Route::any('login',['uses'=>'loginController@login']);
 
 //这个用于给用户展示商品列表
 Route::any('itemList',['uses'=>'ItemsController@itemList']);
+//客户下单 下单页面和下单逻辑
+/*Route::get('userOrder/{id}',['uses'=>'UserOrderController@userOrder']);*/
+Route::post('orderLogic',['uses'=>'UserOrderController@orderLogic']);
+//客户订单列表
+Route::get('orderList',['uses'=>'UserOrderController@orderList']);
+Route::post('orderListSearch',['uses'=>'UserOrderController@orderListSearch']);

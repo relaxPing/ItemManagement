@@ -16,6 +16,13 @@ dashboard 这个是主目录
             <button onclick="locate('items')" class="btn btn-success btn-lg">商品列表</button>
             <button onclick="locate('record_take')" class="btn btn-success btn-lg">提取记录列表</button>
         </div>
+        <div>
+            <button class="btn btn-default btn-lg" onclick="locate('orderList')">客户订单
+                @if($unread > 0)
+                <span class="badge" style="background-color: red">{{$unread}}</span>
+                @endif
+            </button>
+        </div>
     </div>
 @stop
 

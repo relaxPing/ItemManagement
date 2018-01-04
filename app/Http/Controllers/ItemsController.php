@@ -47,6 +47,10 @@ class ItemsController extends Controller{
             }
 
             $data = $request->input('Items');
+            //如果商品已经存在给出错误提示
+            if(Items::where('code',$data['code'])->first()){
+                return redirect()->back()->with('error','商品已存在');
+            }
             if(Items::create($data)){
                 return redirect('items')->with('success','成功新建商品');
             }else{
@@ -71,7 +75,7 @@ class ItemsController extends Controller{
         }*/
 
 
-        $items = Items::orderBy('created_at','desc')->Paginate(25);
+        $items = Items::orderBy('updated_at','desc')->Paginate(25);
         if(Session::has('name')){
             $keywords = Session::get('name');
             $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
@@ -176,7 +180,8 @@ class ItemsController extends Controller{
                     $Item = Items::where('code',$code)->first();
                     $Item -> quantity = $Item -> quantity - $data['quantity'];
                     if($Item ->save()){
-                        return redirect('record_take')->with('success','商品提取成功');
+                        /*return redirect('record_take')->with('success','商品提取成功');*/
+                        return redirect()->back()->with('success','商品提取成功')->withInput();
                     }else{
                         return redirect('items')->with('error','商品提取失败');
                     }
@@ -290,6 +295,7 @@ class ItemsController extends Controller{
             $item -> name = $data['name'];
             $item -> quantity = $data['quantity'];
             $item -> price = $data['price'];
+            $item -> weight = $data['weight'];
             $item -> priceComment = $data['priceComment'];
             $item -> discount = $data['discount'];
             if($item->save()){

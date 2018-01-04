@@ -1,5 +1,5 @@
 <!--
-用于修改商品
+用于修改商品提取记录
 -->
 
 @extends('common/layout')
@@ -18,6 +18,16 @@
                 <div class="col-sm-10">
                     <input class="form-control" id="number" name="Records[quantity]"
                            value="{{old('Records')['quantity']?old('Records')['quantity'] : $record->quantity}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="operator">是否付款：</label>
+                <div class="col-sm-10">
+                    <!--<input  class="form-control" id="operator" name="Items[operator]" value="{{old('Items')['operator']}}">-->
+                    <select class="form-control" name="Records[isPaid]"  style="width: auto">
+                        <option value="0" name="Records[isPaid]" {{$record->isPaid == 0?'selected':''}}>未付款</option>
+                        <option value="1" name="Records[isPaid]" {{$record->isPaid == 1?'selected':''}}>已付款</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

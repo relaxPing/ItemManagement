@@ -53,6 +53,7 @@
                 <th>商品名称</th>
                 <th>商品号码</th>
                 <th>商品数量</th>
+                <th>商品重量(磅)</th>
                 <th>商品单价(美元)</th>
                 <th>价格备注</th>
                 <th>操作</th>
@@ -66,11 +67,17 @@
                     <span class="label label-danger">{{$item->discount}} off</span>
                 @endif
                 </td>
-                <td class="col-sm-3">{{$item->code}}</td>
+                <td class="col-sm-2">{{$item->code}}</td>
                 <td class="col-sm-1">{{$item->quantity}}</td>
-                <td class="col-sm-1">{{$item->price}}</br>
+                <td class="col-sm-1">
+                    {{$item->weight}}
+                    @if($item->weight != null)
+                    <span>磅</span>
+                    @endif
+                </td>
+                <td class="col-sm-1">${{$item->price}}</br>
                     @if($item->discount != null)
-                    <span class="label label-danger">折扣价:{{$item->price - $item->discount}}</span>
+                    <span class="label label-danger">折扣价:${{$item->price - $item->discount}}</span>
                     @endif
                 </td>
                 <td class="col-sm-1">{{$item->priceComment}}</td>

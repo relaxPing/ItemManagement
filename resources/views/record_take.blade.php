@@ -65,9 +65,13 @@
         <tbody>
         @foreach($records as $record)
         <tr>
-            <td class="col-sm-4">{{$record->name}}</td>
+            <td class="col-sm-4">{{$record->name}}
+                @if($record->isPaid == 0)
+                <span class="label label-default">未付款</span>
+                @endif
+            </td>
             <td class="col-sm-2">{{$record->code}}</td>
-            <td class="col-sm-1">{{$record->price}}</br>
+            <td class="col-sm-1">${{$record->price}}</br>
                 @if($record->discount != null)
                 <span class="label label-danger">折扣价:{{$record->price - $record->discount}}</span>
                 @endif

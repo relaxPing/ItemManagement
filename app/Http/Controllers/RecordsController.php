@@ -11,6 +11,7 @@ use App\Records;
 use Illuminate\Http\Request;
 
 class RecordsController extends Controller{
+    //商品提取记录修改
     public function modifyRecord(Request $request,$id){
         $record = Records::find($id);
         if($request->isMethod('POST')){
@@ -32,6 +33,7 @@ class RecordsController extends Controller{
             //修改数据
             $data = $request->input('Records');
             $record -> quantity = $data['quantity'];
+            $record -> isPaid = $data['isPaid'];
             $record -> customer = $data['customer'];
             if($record->save()){
                 return redirect('record_take')->with('success','修改成功');

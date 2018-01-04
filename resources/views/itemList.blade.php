@@ -124,16 +124,23 @@
 
         </div>
     </div>
+
+    <!--成功错误message-->
+    @include('common/validator')
+    @include('common/message')
+
     <!--商品列表-->
     <div class="panel panel-default">
         <div class="panel-heading">商品列表</div>
         <table class="table table-striped table-hover table-responsive">
             <thead>
             <tr>
-                <th>商品名称</th>
-                <th>商品号码</th>
-                <th>商品数量</th>
-                <th>商品单价(美元)</th>
+                <th class="col-sm-4">商品名称</th>
+                <th class="col-sm-3">商品号码</th>
+                <th class="col-sm-1">商品数量</th>
+                <th class="col-sm-1">商品重量(磅)</th>
+                <th class="col-sm-2">商品单价(美元)</th>
+                <th class="col-sm-1">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -146,16 +153,151 @@
                 </td>
                 <td>{{$item->code}}</td>
                 <td>{{$item->quantity}}</td>
-                <td>{{$item->price}}</br>
-                    @if($item->discount != null)
-                    <span class="label label-danger">折扣价:{{$item->price - $item->discount}}</span>
+                <td>{{$item->weight}}
+                    @if($item->weight != null)
+                    <span>磅</span>
                     @endif
                 </td>
+                <td>${{$item->price}}</br>
+                    @if($item->discount != null)
+                    <span class="label label-danger">折扣价:${{$item->price - $item->discount}}</span>
+                    @endif
+                </td>
+                <th><button class="btn btn-default" data-toggle="modal" data-target="#myModal{{$item->id}}">购买</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal{{$item->id}}" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">商品购买</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal" role="form" method="POST" action="{{url('orderLogic')}}">
+                                        {{csrf_field()}}
+                                        <input class="hide" name="UserOrder[price]" value="{{$item->price}}">
+                                        <input class="hide" name="UserOrder[discount]" value="{{$item->discount}}">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">商品名称</label>
+                                            <label class="col-sm-9 control-label " name="UserOrder[itemname]" style="text-align: left">{{$item->name}}</label>
+                                            <input class="hide" name="UserOrder[itemname]" value="{{$item->name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label">商品条码</label>
+                                            <label class="col-sm-9 control-label " name="UserOrder[itemcode]" style="text-align: left">{{$item->code}}</label>
+                                            <input class="hide" name="UserOrder[itemcode]" value="{{$item->code}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label">价格</label>
+                                            <label class="col-sm-9 control-label "  style="text-align: left">
+                                                @if($item->discount > 0)
+                                                {{$item->price - $item->discount}} (原价：{{$item->price}})
+                                                @else
+                                                {{$item->price}}
+                                                @endif
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label  class="col-sm-3 control-label">用户姓名</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="UserOrder[username]"  id="user_name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">会员号</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="UserOrder[userid]"
+                                                       placeholder="选填,如忘记可以留空" style="font-weight: 200">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">数量</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" name="UserOrder[quantity]">
+                                            </div>
+                                        </div>
+
+                                    @include('common/validator')
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-info pull-left">确认购买</button>
+                                    </form>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </th>
+                <!-- Trigger the modal with a button -->
+                <!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+-->             <!-- Modal -->
+                <!--<div id="myModal{{$item->id}}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">购买商品</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                <div class="form-group" style="margin: 2px 0px">
+                                    <label class="control-label col-sm-3">商品名称：</label>
+                                    <label class="control-label col-sm-9">{{$item->name}}</label>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="form-group" style="margin: 2px 0px">
+                                    <label class="control-label col-sm-3">商品号：</label>
+                                    <label class="control-label col-sm-9">{{$item->code}}</label>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="form-group" style="margin: 2px 0px">
+                                    <label class="control-label col-sm-3" >姓名：</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" name="Items[name]" value="{{old('Items')['name']}}">
+                                    </div>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="form-group" style="margin: 2px 0px">
+                                    <label class="control-label col-sm-3" >会员号：</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" name="Items[name]" value="{{old('Items')['name']}}" placeholder="选填，如忘记可留空">
+                                    </div>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="form-group" style="margin: 2px 0px">
+                                    <label class="control-label col-sm-3" >数量：</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" name="Items[name]" value="{{old('Items')['name']}}" >
+                                    </div>
+                                </div>
+                                </p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>-->
+
+
             </tr>
             @endforeach
             </tbody>
         </table>
     </div>
+
     <!-- 分页  -->
     <div>
         <div class="pull-right">

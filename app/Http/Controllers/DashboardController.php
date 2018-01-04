@@ -6,6 +6,7 @@
  * Time: 11:51 PM
  */
 namespace App\Http\Controllers;
+use App\UserOrder;
 use Session;
 class DashboardController extends Controller{
     public function dashboard(){
@@ -18,6 +19,9 @@ class DashboardController extends Controller{
         if(Session::has('customer')){
             Session::forget('customer');
         }
-        return view('welcome');
+        $unread = UserOrder::where('isOpened',0)->count();
+        return view('welcome',[
+            'unread'=>$unread
+        ]);
     }
 }
