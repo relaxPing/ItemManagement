@@ -6,6 +6,7 @@
  * Time: 4:19 PM
  */
 namespace App\Http\Controllers;
+use App\Adds;
 use App\Items;
 use App\Records;
 use Illuminate\Http\Request;
@@ -47,11 +48,22 @@ class ItemsController extends Controller{
             }
 
             $data = $request->input('Items');
+            //finalPrice是折后价 需要补充
+            if($data['discount'] == null){
+                $data['finalPrice'] = $data['price'];
+            }else{
+                $data['finalPrice'] = $data['price'] - $data['discount'];
+            }
             //如果商品已经存在给出错误提示
             if(Items::where('code',$data['code'])->first()){
                 return redirect()->back()->with('error','商品已存在');
             }
-            if(Items::create($data)){
+            //建立了商品后，记录要存在record_add中
+            $record['name'] = $data['name'];
+            $record['code'] = $data['code'];
+            $record['finalPrice'] = $data['finalPrice'];
+            $record['quantity'] = $data['quantity'];
+            if(Items::create($data)&& Adds::create($record)){
                 return redirect('items')->with('success','成功新建商品');
             }else{
                 return redirect('items')->with('error','商品新建失败');
@@ -108,7 +120,7 @@ class ItemsController extends Controller{
         ]);
     }
 
-    //商品录入
+    //商品录入（进货）
     public function add(Request $request){
         if($request->isMethod('POST')){
             $validator = \Validator::make($request->input(),[
@@ -130,7 +142,14 @@ class ItemsController extends Controller{
             if(Items::where('code',$itemCode)){
                 $Item = Items::where('code',$itemCode)->first();
                 $Item -> quantity = $Item -> quantity + $data['quantity'];
-                if($Item ->save()){
+
+                //增加了商品后，记录要存在record_add中
+                $record['name'] = $Item->name;
+                $record['code'] = $Item->code;
+                $record['finalPrice'] = $Item->finalPrice;
+                $record['quantity'] = $data['quantity'];
+                $add = Adds::create($record);
+                if($Item ->save() && $add->save() ){
                     return redirect('items')->with('success','商品录入成功');
                 }else{
                     return redirect('items')->with('error','商品录入失败');
@@ -169,9 +188,16 @@ class ItemsController extends Controller{
             $data = $request->input('Items');
             $code = $data['code'];
             if(Items::where('code',$code)){
+                //这些是输入框没有 需要加进去的数据
                 $data['name'] = Items::where('code',$code)->first()['name'];
                 $data['price'] = Items::where('code',$code)->first()['price'];
                 $data['discount'] = Items::where('code',$code)->first()['discount'];
+                //finalPrice是折后价 需要补充
+                if($data['discount'] == null){
+                    $data['finalPrice'] = $data['price'];
+                }else{
+                    $data['finalPrice'] = $data['price'] - $data['discount'];
+                }
                 //保存记录和商品数量修改之前先看看商品库存足不足
                 if(Items::where('code',$code)->first()['quantity']-$data['quantity']<0){
                     return redirect()->back()->with('error','商品数量不足');
@@ -298,6 +324,12 @@ class ItemsController extends Controller{
             $item -> weight = $data['weight'];
             $item -> priceComment = $data['priceComment'];
             $item -> discount = $data['discount'];
+            //赋值finalPrice之前先判断一下是否有折扣
+            if($item->discount == null){
+                $item->finalPrice = $item ->price;
+            }else{
+                $item->finalPrice = $item ->price -$item ->discount;
+            }
             if($item->save()){
                 /*return redirect('items')->with('success','修改成功');*/
                 echo "<script>history.go(-2)</script>";

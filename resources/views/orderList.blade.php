@@ -78,7 +78,7 @@
             <td class="col-sm-1">{{$order->quantity}}</td>
             <td class="col-sm-1">
                 @if($order->discount != null)
-                {{$order->price}}<br><span class="label label-danger">折扣价:{{$order->price - $order->discount}}</span>
+                {{$order->price}}<br><span class="label label-danger">折扣价:{{$order->finalPrice}}</span>
                 @else
                 {{$order->price}}
                 @endif

@@ -73,7 +73,7 @@
             <td class="col-sm-2">{{$record->code}}</td>
             <td class="col-sm-1">${{$record->price}}</br>
                 @if($record->discount != null)
-                <span class="label label-danger">折扣价:{{$record->price - $record->discount}}</span>
+                <span class="label label-danger">折扣价:{{$record->finalPrice}}</span>
                 @endif
             </td>
             <td class="col-sm-1">{{$record->quantity}}</td>

@@ -14,7 +14,7 @@ class UserOrder extends Model{
     public $timestamps = true;
     public $guarded = [];
     protected function getDataFormat(){
-        return time();
+        return 'U';
     }
 
     protected function asDateTime($value)

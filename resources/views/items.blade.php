@@ -12,6 +12,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{url('create')}}"><button class="btn btn-default">新建商品</button></a>
+        <a href="{{url('add')}}"><button class="btn btn-default">进货</button></a>
     </div>
     <div class="panel-body">
         <div class="form-inline">
@@ -77,7 +78,7 @@
                 </td>
                 <td class="col-sm-1">${{$item->price}}</br>
                     @if($item->discount != null)
-                    <span class="label label-danger">折扣价:${{$item->price - $item->discount}}</span>
+                    <span class="label label-danger">折扣价:${{$item->finalPrice}}</span>
                     @endif
                 </td>
                 <td class="col-sm-1">{{$item->priceComment}}</td>

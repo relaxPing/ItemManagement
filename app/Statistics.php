@@ -2,18 +2,17 @@
 /**
  * Created by IntelliJ IDEA.
  * User: X.P
- * Date: 11/29/2017
- * Time: 4:13 PM
+ * Date: 1/8/2018
+ * Time: 2:47 PM
  */
 namespace App;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Items extends Model{
-    protected $table = 'items';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
+//进货记录的模型
+class Statistics extends Model{
+    protected $table = 'statistics';
     public $timestamps = true;
-    //public $fillable =['name','price','code','quantity','id','priceComment'];
     public $guarded = [];
     protected function getDataFormat(){
         return 'U';

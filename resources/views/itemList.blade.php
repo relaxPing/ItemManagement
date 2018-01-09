@@ -160,7 +160,7 @@
                 </td>
                 <td>${{$item->price}}</br>
                     @if($item->discount != null)
-                    <span class="label label-danger">折扣价:${{$item->price - $item->discount}}</span>
+                    <span class="label label-danger">折扣价:${{$item->finalPrice}}</span>
                     @endif
                 </td>
                 <th><button class="btn btn-default" data-toggle="modal" data-target="#myModal{{$item->id}}">购买</button>
@@ -192,8 +192,8 @@
                                         <div class="form-group">
                                             <label  class="col-sm-3 control-label">价格</label>
                                             <label class="col-sm-9 control-label "  style="text-align: left">
-                                                @if($item->discount > 0)
-                                                {{$item->price - $item->discount}} (原价：{{$item->price}})
+                                                @if($item->discount != null)
+                                                {{$item->finalPrice}} (原价：{{$item->price}})
                                                 @else
                                                 {{$item->price}}
                                                 @endif

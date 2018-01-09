@@ -44,3 +44,12 @@ Route::post('orderLogic',['uses'=>'UserOrderController@orderLogic']);
 //客户订单列表
 Route::get('orderList',['uses'=>'UserOrderController@orderList']);
 Route::post('orderListSearch',['uses'=>'UserOrderController@orderListSearch']);
+
+//用于更新数据库的页面
+Route::get('temp',function (){
+   return view('temp');
+});
+
+//财务统计
+Route::get('statistics',['uses'=>'FinancialController@getStatistics']);
+Route::post('statistics',['uses'=>'FinancialController@postStatistics']);
