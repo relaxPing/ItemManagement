@@ -106,13 +106,13 @@
                         <button type="submit" class="btn btn-default">查询</button>
                     </form>
                 </div>
-                <div class="input-group" >
-                    <form class="form-inline" method="post" action="">
-                        {{csrf_field()}}
-                        <input class="form-control"  placeholder="通过商品号码查询" style="width: 240px" name="Search[num]">
-                        <button type="submit" class="btn btn-default">查询</button>
-                    </form>
-                </div>
+<!--                <div class="input-group" >-->
+<!--                    <form class="form-inline" method="post" action="">-->
+<!--                        {{csrf_field()}}-->
+<!--                        <input class="form-control"  placeholder="通过商品号码查询" style="width: 240px" name="Search[num]">-->
+<!--                        <button type="submit" class="btn btn-default">查询</button>-->
+<!--                    </form>-->
+<!--                </div>-->
                 <div class="input-group" >
                     <form class="form-inline" method="post" action="">
                         {{csrf_field()}}
@@ -136,7 +136,7 @@
             <thead>
             <tr>
                 <th class="col-sm-4">商品名称</th>
-                <th class="col-sm-3">商品号码</th>
+                <!--<th class="col-sm-3">商品号码</th>-->
                 <th class="col-sm-1">商品数量</th>
                 <th class="col-sm-1">商品重量(磅)</th>
                 <th class="col-sm-2">商品单价(美元)</th>
@@ -151,7 +151,7 @@
                     <span class="label label-danger">{{$item->discount}} off</span>
                     @endif
                 </td>
-                <td>{{$item->code}}</td>
+<!--                <td>{{$item->code}}</td>-->
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->weight}}
                     @if($item->weight != null)
