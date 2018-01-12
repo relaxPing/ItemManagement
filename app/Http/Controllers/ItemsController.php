@@ -367,11 +367,11 @@ class ItemsController extends Controller{
         $items = Items::orderBy('created_at','desc')->Paginate(25);
         if(Session::has('c_item_name')){
             $keywords = Session::get('c_item_name');
-            $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+            $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
         }
         if(Session::has('c_item_num')){
             $keywords = Session::get('c_item_num');
-            $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+            $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
         }
         if($request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
@@ -380,7 +380,7 @@ class ItemsController extends Controller{
                 if(Session::has('c_item_num')){
                     Session::forget('c_item_num');
                 }
-                $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+                $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }
             if(array_key_exists('num',$request->input('Search'))){
                 $keywords = $request->input('Search')['num'];
@@ -388,7 +388,7 @@ class ItemsController extends Controller{
                 if(Session::has('c_item_name')){
                     Session::forget('c_item_name');
                 }
-                $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(2);
+                $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }
         }
         return view('itemList',[
