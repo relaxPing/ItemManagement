@@ -211,7 +211,7 @@
                                             <label class="col-sm-3 control-label">会员号</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="UserOrder[userid]"
-                                                        style="font-weight: 200">
+                                                        style="font-weight: 200" placeholder="请填写邮箱或会员ID">
                                             </div>
                                         </div>
                                         <div class="form-group">
