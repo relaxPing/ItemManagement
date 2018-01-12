@@ -179,6 +179,7 @@
                                         {{csrf_field()}}
                                         <input class="hide" name="UserOrder[price]" value="{{$item->price}}">
                                         <input class="hide" name="UserOrder[discount]" value="{{$item->discount}}">
+                                        <input class="hide" name="UserOrder[finalPrice]" value="{{$item->finalPrice}}">
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">商品名称</label>
                                             <label class="col-sm-9 control-label " name="UserOrder[itemname]" style="text-align: left">{{$item->name}}</label>
@@ -210,7 +211,7 @@
                                             <label class="col-sm-3 control-label">会员号</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" name="UserOrder[userid]"
-                                                       placeholder="选填,如忘记可以留空" style="font-weight: 200">
+                                                        style="font-weight: 200">
                                             </div>
                                         </div>
                                         <div class="form-group">

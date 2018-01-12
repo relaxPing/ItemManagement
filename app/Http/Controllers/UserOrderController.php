@@ -26,7 +26,7 @@ class UserOrderController extends Controller{
         $validator = \Validator::make($request->input(),[
             'UserOrder.username'=>'required|max:50',
             'UserOrder.quantity'=>'required|max:5',
-            'UserOrder.userid'=>'max:10'
+            'UserOrder.userid'=>'required|max:10'
         ],[],[
             'UserOrder.username'=>'姓名',
             'UserOrder.userid'=>'用户id',
