@@ -61,9 +61,12 @@ class UserOrderController extends Controller{
     public function  orderList(){
         $orders = UserOrder::orderBy('created_at','desc')->paginate(25);
         $unopenedOrders = UserOrder::where('isOpened',0)->get();
+        //只用于传状态的模型
+        $orderForStatus = new UserOrder();
         return view('orderList',[
             'orders' => $orders,
-            'unopenedOrders'=>$unopenedOrders
+            'unopenedOrders'=>$unopenedOrders,
+            'orderForStatus'=>$orderForStatus
         ]);
     }
 

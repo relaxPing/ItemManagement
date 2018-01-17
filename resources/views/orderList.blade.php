@@ -138,7 +138,7 @@
                         <div class="form-group">
                             <label  class="col-sm-3 control-label">状态</label>
                             <select class="form-control" style="width: auto" id="status_select">
-                                @foreach($orders->first()->status() as $k => $val)
+                                @foreach($orderForStatus->status() as $k => $val)
                                 <option value="{{$k}}">{{$val}}</option>
                                 @endforeach
                             </select>
