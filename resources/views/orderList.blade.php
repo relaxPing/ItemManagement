@@ -10,6 +10,9 @@
 ?>
 
 @extends('common/layout')
+@section('javascript')
+<script src="js/edit.js"></script>
+@stop
 @section('body')
 <!--返回首页按钮-->
 @include('common/back')
@@ -58,7 +61,7 @@
 <!--商品列表-->
 <div class="panel panel-default">
     <div class="panel-heading">订单列表</div>
-    <table class="table table-striped table-hover table-responsive">
+    <table class="table table-hover table-responsive">
         <thead>
         <tr>
             <th>商品名称</th>
@@ -68,12 +71,19 @@
             <th>客人姓名</th>
             <th>客人id</th>
             <th>订购时间</th>
+            <th>状态</th>
         </tr>
         </thead>
         <tbody>
         @foreach($orders as $order)
-        <tr>
-            <td class="col-sm-4">{{$order->itemname}}</td>
+        @if($order-> status == 0 || $order-> status == 1)
+            @if($order-> status == 0)
+                <tr id="order{{$order->id}}" style="background-color:#FFDED9">
+            @endif
+            @if($order-> status == 1)
+                <tr id="order{{$order->id}}">
+            @endif
+            <td class="col-sm-3">{{$order->itemname}}</td>
             <td class="col-sm-2">{{$order->itemcode}}</td>
             <td class="col-sm-1">{{$order->quantity}}</td>
             <td class="col-sm-1">
@@ -85,11 +95,67 @@
             </td>
             <td class="col-sm-1">{{$order->username}}</td>
             <td class="col-sm-1">{{$order->userid}}</td>
-            <td class="col-sm-2">{{$order->created_at}}</td>
+            <td class="col-sm-1">{{$order->created_at}}</td>
+            <!--<td class="col-sm-2"><button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">修改</button>  {{$order->status($order->status)}}  </td>-->
+            <td class="col-sm-2" ><button class="btn btn-default edit" value="{{ $order->id }}">修改</button>    {{$order->status($order->status)}}</td>
         </tr>
+        @else
+        <tr id="order{{$order->id}}">
+            <td class="col-sm-3">{{$order->itemname}}</td>
+            <td class="col-sm-2">{{$order->itemcode}}</td>
+            <td class="col-sm-1">{{$order->quantity}}</td>
+            <td class="col-sm-1">
+                @if($order->discount != null)
+                {{$order->price}}<br><span class="label label-danger">折扣价:{{$order->finalPrice}}</span>
+                @else
+                {{$order->price}}
+                @endif
+            </td>
+            <td class="col-sm-1">{{$order->username}}</td>
+            <td class="col-sm-1">{{$order->userid}}</td>
+            <td class="col-sm-1">{{$order->created_at}}</td>
+            <td class="col-sm-2">{{$order->status($order->status)}}</td>
+        </tr>
+        @endif
         @endforeach
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">修改</h4>
+                </div>
+                <form id="status_form" class="form-horizontal" role="form" method="POST" >
+                    <!--{{csrf_field()}}-->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label">状态</label>
+                            <select class="form-control" style="width: auto" id="status_select">
+                                @foreach($order->status() as $k => $val)
+                                <option value="{{$k}}">{{$val}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    {!! csrf_field() !!}
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" id="tsave" class="btn btn-info" value="update">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <input type="hidden" id="tid" name="tid" value="-1">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>
 <!-- 分页  -->
 <div>

@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Items;
 use App\UserOrder;
+use App\UserOrderEdit;
 use Illuminate\Http\Request;
 use Session;
 
@@ -42,6 +43,8 @@ class UserOrderController extends Controller{
         if($data['quantity'] > $itemRest){
             return redirect('itemList')->with('error','抱歉，商品数量不足！我们会尽快补货。如有问题请联系西游寄');
         }
+        $data['totalPrice'] = $data['quantity'] * $data['finalPrice'];
+        $data['status'] = 0;
         if(UserOrder::create($data)){
             $item = Items::where('code',$data['itemcode'])->first();
             $item -> quantity = $item -> quantity - $data['quantity'];
@@ -120,5 +123,22 @@ class UserOrderController extends Controller{
         return view('orderList',[
             'orders' => $orders
         ]);
+    }
+
+
+    //modal显示
+    public function show($id) {
+        $userOrder = UserOrder::find($id);
+        return response()->json($userOrder);
+    }
+    //客户订单修改
+    public function update(Request $request, $id) {
+        //不用验证,因为是下拉框,一定有值得
+        //逻辑
+        $userOrder = UserOrderEdit::find($id);
+        $userOrder->status = $request->get('status');
+        $userOrder->save();
+        //渲染(return)
+        return response()->json($userOrder);
     }
 }

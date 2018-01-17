@@ -13,6 +13,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="{{url('take')}}"><button class="btn btn-default">提货</button></a>
+        <a href="{{url('backExcelPage')}}"><button class="btn btn-default">Excel导出</button></a>
     </div>
     <div class="panel-body">
         <div class="form-inline">

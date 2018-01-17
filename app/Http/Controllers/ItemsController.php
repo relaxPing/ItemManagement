@@ -198,6 +198,7 @@ class ItemsController extends Controller{
                 }else{
                     $data['finalPrice'] = $data['price'] - $data['discount'];
                 }
+                $data['totalPrice'] = $data['finalPrice'] * $data['quantity'];
                 //保存记录和商品数量修改之前先看看商品库存足不足
                 if(Items::where('code',$code)->first()['quantity']-$data['quantity']<0){
                     return redirect()->back()->with('error','商品数量不足');
@@ -330,6 +331,7 @@ class ItemsController extends Controller{
             }else{
                 $item->finalPrice = $item ->price -$item ->discount;
             }
+
             if($item->save()){
                 /*return redirect('items')->with('success','修改成功');*/
                 echo "<script>history.go(-2)</script>";

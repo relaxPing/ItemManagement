@@ -2,16 +2,16 @@
 /**
  * Created by IntelliJ IDEA.
  * User: X.P
- * Date: 1/1/2018
- * Time: 12:02 PM
+ * Date: 1/16/2018
+ * Time: 9:22 PM
  */
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserOrder extends Model{
+class UserOrderEdit extends Model{
     protected $table = 'userorder';
-    public $timestamps = true;
+    public $timestamps = false;
     public $guarded = [];
     protected function getDataFormat(){
         return 'U';

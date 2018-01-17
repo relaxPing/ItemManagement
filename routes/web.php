@@ -44,6 +44,10 @@ Route::post('orderLogic',['uses'=>'UserOrderController@orderLogic']);
 //客户订单列表
 Route::get('orderList',['uses'=>'UserOrderController@orderList']);
 Route::post('orderListSearch',['uses'=>'UserOrderController@orderListSearch']);
+//客户订单页面的修改
+Route::resource('orderListEdit', 'UserOrderController', ['only' => [
+    'update','show'
+]]);
 
 //用于更新数据库的页面
 Route::get('temp',function (){
@@ -53,3 +57,16 @@ Route::get('temp',function (){
 //财务统计
 Route::get('statistics',['uses'=>'FinancialController@getStatistics']);
 Route::post('statistics',['uses'=>'FinancialController@postStatistics']);
+
+//导出excel
+//1.导出后台提货的excel的页面
+Route::get('backExcelPage',['uses'=>'ExcelController@backExcelPage']);
+//2.导出后台提货的excel的逻辑
+Route::post('backExcelLogic',['uses'=>'ExcelController@backExcelLogic']);
+//3.导出客户下单的excel的页面
+Route::get('orderExcelPage',['uses'=>'ExcelController@orderExcelPage']);
+//4.导出客户下单excel的的逻辑
+Route::post('orderExcelLogic',['uses'=>'ExcelController@orderExcelLogic']);
+
+
+

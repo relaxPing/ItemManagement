@@ -18,8 +18,8 @@ dashboard 这个是主目录
         </div>
         <div>
             <button class="btn btn-default btn-lg" onclick="locate('orderList')">客户订单
-                @if($unread > 0)
-                <span class="badge" style="background-color: red">{{$unread}}</span>
+                @if($remind > 0)
+                <span class="badge" style="background-color: red">{{$remind}}</span>
                 @endif
             </button>
         </div>

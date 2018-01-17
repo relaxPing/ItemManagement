@@ -19,9 +19,9 @@ class DashboardController extends Controller{
         if(Session::has('customer')){
             Session::forget('customer');
         }
-        $unread = UserOrder::where('isOpened',0)->count();
+        $remind = UserOrder::where('status',0)->count();
         return view('welcome',[
-            'unread'=>$unread
+            'remind'=>$remind
         ]);
     }
 }

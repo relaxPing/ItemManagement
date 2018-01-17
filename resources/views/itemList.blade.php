@@ -167,7 +167,6 @@
                     <!-- Modal -->
                     <div class="modal fade" id="myModal{{$item->id}}" role="dialog">
                         <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
