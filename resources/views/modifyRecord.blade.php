@@ -31,6 +31,13 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-sm-2" for="customer">备注：</label>
+                <div class="col-sm-10">
+                    <input  class="form-control"  name="Records[comment]"
+                            value="{{old('Records')['comment']?old('Records')['comment'] : $record->comment}}" placeholder="选填">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-sm-2" for="customer">提取客户：</label>
                 <div class="col-sm-10">
                     <input  class="form-control" id="customer" name="Records[customer]"

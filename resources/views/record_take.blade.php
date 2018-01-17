@@ -58,6 +58,7 @@
             <th>单价(美元)</th>
             <th>提取数量</th>
             <th>提取客户</th>
+            <th>备注</th>
             <th>提取时间</th>
             <th>操作员</th>
             <th>操作</th>
@@ -71,7 +72,7 @@
                 <span class="label label-default">未付款</span>
                 @endif
             </td>
-            <td class="col-sm-2">{{$record->code}}</td>
+            <td class="col-sm-1">{{$record->code}}</td>
             <td class="col-sm-1">${{$record->price}}</br>
                 @if($record->discount != null)
                 <span class="label label-danger">折扣价:{{$record->finalPrice}}</span>
@@ -79,6 +80,7 @@
             </td>
             <td class="col-sm-1">{{$record->quantity}}</td>
             <td class="col-sm-1">{{$record->customer}}</td>
+            <td class="col-sm-1">{{$record->comment}}</td>
             <td class="col-sm-1">{{date('Y-m-d',strtotime($record->created_at))}}</td>
             <td class="col-sm-1">{{$record->operator}}</td>
             <td class="col-sm-1"><a href="{{ url('modifyRecord',['id'=>$record->id])}}"><button class="btn btn-default">修改</button></a></td>

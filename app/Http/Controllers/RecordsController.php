@@ -35,6 +35,7 @@ class RecordsController extends Controller{
             $record -> quantity = $data['quantity'];
             $record -> isPaid = $data['isPaid'];
             $record -> customer = $data['customer'];
+            $record -> comment = $data['comment'];
             $record -> totalPrice = $record -> quantity * $record -> finalPrice;
             if($record->save()){
                 return redirect('record_take')->with('success','修改成功');
