@@ -75,6 +75,7 @@
         </tr>
         </thead>
         <tbody>
+
         @foreach($orders as $order)
         @if($order-> status == 0 || $order-> status == 1)
             @if($order-> status == 0)
@@ -137,7 +138,7 @@
                         <div class="form-group">
                             <label  class="col-sm-3 control-label">状态</label>
                             <select class="form-control" style="width: auto" id="status_select">
-                                @foreach($order->status() as $k => $val)
+                                @foreach($orders->first()->status() as $k => $val)
                                 <option value="{{$k}}">{{$val}}</option>
                                 @endforeach
                             </select>
