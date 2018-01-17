@@ -26,22 +26,22 @@ class ExcelController extends Controller
             $records = ExcelRecords::where('operator',$operator)->where('isPaid',$isPaid)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer != null && $operator == null && $isPaid !=null){
-            $records = ExcelRecords::where('customer',$customer)->where('isPaid',$isPaid)->get();
+            $records = ExcelRecords::where('customer',$customer)->where('isPaid',$isPaid)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer != null && $operator != null && $isPaid ==null){
-            $records = ExcelRecords::where('customer',$customer)->where('operator',$operator)->get();
+            $records = ExcelRecords::where('customer',$customer)->where('operator',$operator)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer == null && $operator == null && $isPaid !=null){
-            $records = ExcelRecords::where('isPaid',$isPaid)->get();
+            $records = ExcelRecords::where('isPaid',$isPaid)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer == null && $operator != null && $isPaid ==null){
-            $records = ExcelRecords::where('operator',$operator)->get();
+            $records = ExcelRecords::where('operator',$operator)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer != null && $operator == null && $isPaid ==null){
-            $records = ExcelRecords::where('customer',$customer)->get();
+            $records = ExcelRecords::where('customer',$customer)->select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         if($customer == null && $operator == null && $isPaid ==null){
-            $records = ExcelRecords::all();
+            $records = ExcelRecords::select('code','name','finalPrice','quantity','totalPrice','customer','operator','isPaid','created_at')->get();
         }
         foreach ($records as $record){
             if($record->isPaid == 1){
@@ -56,7 +56,7 @@ class ExcelController extends Controller
             $total = $total + $record->totalPrice;
         }
         //dd($records);
-        Excel::create('1', function($excel) use($records,$total) {
+        Excel::create($customer.time(), function($excel) use($records,$total) {
 
             $excel->sheet('Sheet1', function($sheet) use($records,$total) {
 
