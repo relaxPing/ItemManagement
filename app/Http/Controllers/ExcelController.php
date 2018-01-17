@@ -46,8 +46,7 @@ class ExcelController extends Controller
         foreach ($records as $record){
             if($record->isPaid == 1){
                 $record->isPaid = '已付款';
-            }
-            if($record->isPaid == 0){
+            }else if($record->isPaid == 0){
                 $record->isPaid = '未付款';
             }
         }
