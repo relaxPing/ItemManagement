@@ -285,7 +285,7 @@ class ItemsController extends Controller{
                 $records = Records::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
             }
             if ($customer == null && $isPaid != null && $date == null) {
-                $records = Records::where('isPaid', $isPaid)->Paginate(25);
+                $records = Records::where('isPaid', $isPaid)->orderBy('created_at', 'desc')->Paginate(25);
             }
             if ($customer != null && $isPaid == null && $date == null) {
                 $records = Records::where('customer','like', '%'.$customer.'%')->orderBy('created_at', 'desc')->Paginate(25);
@@ -389,7 +389,7 @@ class ItemsController extends Controller{
                 }
                 if ($customer == null && $isPaid != null && $date == null) {
                     Session::put('isPaid', $isPaid);
-                    $records = Records::where('isPaid', $isPaid)->Paginate(25);
+                    $records = Records::where('isPaid', $isPaid)->orderBy('created_at', 'desc')->Paginate(25);
                 }
                 if ($customer != null && $isPaid == null && $date == null) {
                     Session::put('customer', $customer);

@@ -116,7 +116,7 @@ class UserOrderController extends Controller{
                 $orders = UserOrder::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
             }
             if ($username == null && $status != null && $date == null) {
-                $orders = UserOrder::where('status', $status)->Paginate(25);
+                $orders = UserOrder::where('status', $status)->orderBy('created_at', 'desc')->Paginate(25);
             }
             if ($username != null && $status == null && $date == null) {
                 $orders = UserOrder::where('username','like', '%'.$username.'%')->orderBy('created_at', 'desc')->Paginate(25);
@@ -212,7 +212,7 @@ class UserOrderController extends Controller{
                 }
                 if ($username == null && $status != null && $date == null) {
                     Session::put('status', $status);
-                    $orders = UserOrder::where('status', $status)->Paginate(25);
+                    $orders = UserOrder::where('status', $status)->orderBy('created_at', 'desc')->Paginate(25);
                 }
                 if ($username != null && $status == null && $date == null) {
                     Session::put('username', $username);
