@@ -3,15 +3,25 @@
 -->
 <?php
     /*把isopend变成yes*/
-    foreach ($unopenedOrders as $unopenedOrder){
+    /*foreach ($unopenedOrders as $unopenedOrder){
         $unopenedOrder->isOpened = 1;
         $unopenedOrder->save();
-    }
+    }*/
 ?>
 
 @extends('common/layout')
 @section('javascript')
 <script src="js/edit.js"></script>
+
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+    $(function() {
+        $( "#datepicker" ).datepicker();
+    });
+</script>
+
 @stop
 @section('body')
 <!--返回首页按钮-->
@@ -22,13 +32,6 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="form-inline">
-            <div class="input-group">
-                <form class="form-inline" method="post" action="">
-                    {{csrf_field()}}
-                    <input class="form-control"  placeholder="通过客人姓名查询" style="width: 300px" name="UserOrder[username]">
-                    <button type="submit" class="btn btn-default">查询</button>
-                </form>
-            </div>
             <div class="input-group" >
                 <form class="form-inline" method="post" action="">
                     {{csrf_field()}}
@@ -43,9 +46,26 @@
                     <button type="submit" class="btn btn-default">查询</button>
                 </form>
             </div>
-            <div class="input-group" >
+            <br>
+            <div class="input-group" style="margin-top: 10px">
                 <form class="form-inline" method="post" action="">
                     {{csrf_field()}}
+                    <input class="form-control"  placeholder="通过客人姓名查询" style="width: 300px" name="UserOrder[username]">
+                    <input type="text" id="datepicker" class="form-control" placeholder="提货日期" name="UserOrder[date]">
+                    <select class="form-control" name="UserOrder[status]">
+                        <option value="0">未提货</option>
+                        <option value="1">已提货，未付款</option>
+                        <option value="2">已付款</option>
+                        <option value="3">取消订单</option>
+                        <option value="">全部</option>
+                    </select>
+                    <button type="submit" class="btn btn-default">查询</button>
+                </form>
+            </div>
+            <div class="input-group" style="margin-top: 10px">
+                <form class="form-inline" method="post" action="">
+                    {{csrf_field()}}
+                    <input class="hide" name="all" value="all">
                     <button type="submit" class="btn btn-default">显示全部</button>
                 </form>
             </div>

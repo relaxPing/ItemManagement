@@ -58,20 +58,183 @@ class UserOrderController extends Controller{
     }
 
     //客户订单列表
-    public function  orderList(){
+    public function  orderList(Request $request){
+        //当输入为空或者没有收入的时候
         $orders = UserOrder::orderBy('created_at','desc')->paginate(25);
-        $unopenedOrders = UserOrder::where('isOpened',0)->get();
+        //$unopenedOrders = UserOrder::where('isOpened',0)->get();
         //只用于传状态的模型
+
+        //当点击显示全部时候要清空所有session并且显示全部
+
+        if($request->input('all')){
+            Session::forget('itemname');
+            Session::forget('userid');
+            Session::forget('username');
+            Session::forget('status');
+            Session::forget('date');
+            $orders = UserOrder::orderBy('created_at','desc')->paginate(25);
+        }
+
+        if(Session::has('itemname')){
+            $keywords = Session::get('itemname');
+            $orders = UserOrder::where('itemname','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        if(Session::has('userid')){
+            $keywords = Session::get('userid');
+            $orders = UserOrder::where('userid','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }
+        /*if(Session::has('username')){
+            $keywords = Session::get('username');
+            $orders = UserOrder::where('username','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }*/
+        if(Session::has('username') || Session::has('status') || Session::has('date')){
+            $username = Session::get('username');
+            $status = Session::get('status');
+            $date = Session::get('date');
+
+            //把jquery传来的日期字符串转换成真的日期
+            if(Session::has('date') != null){
+                $dateArray = explode('/',Session::get('date'));
+                $month = $dateArray[0];
+                $day = $dateArray[1];
+                $year = $dateArray[2];
+
+                $start = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day,$year));
+                $end = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day + 1,$year));
+            }
+            //三个条件 七种情况
+            if ($username == null && $status != null && $date != null) {
+                $orders = UserOrder::where('status', $status)->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($username != null && $status == null && $date != null) {
+                $orders = UserOrder::where('username','like', '%'.$username.'%')->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($username != null && $status != null && $date == null) {
+                $orders = UserOrder::where('status', $status)->where('username','like', '%'.$username.'%')->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($username == null && $status == null && $date != null) {
+                $orders = UserOrder::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($username == null && $status != null && $date == null) {
+                $orders = UserOrder::where('status', $status)->Paginate(25);
+            }
+            if ($username != null && $status == null && $date == null) {
+                $orders = UserOrder::where('username','like', '%'.$username.'%')->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($username == null && $status == null && $date == null) {
+                $orders = UserOrder::orderBy('created_at','desc')->Paginate(25);
+            }
+
+        }
+
+
+
+        //检查输入
+
+        if($request->input('UserOrder')){
+
+            if(array_key_exists('itemname',$request->input('UserOrder'))){
+                $keywords = $request->input('UserOrder')['itemname'];
+                Session::put('itemname',$keywords);
+                if(Session::has('username')){
+                    Session::forget('username');
+                }
+                if(Session::has('userid')){
+                    Session::forget('userid');
+                }
+                $orders = UserOrder::where('itemname','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
+            if(array_key_exists('userid',$request->input('UserOrder'))){
+                $keywords = $request->input('UserOrder')['userid'];
+                Session::put('userid',$keywords);
+                if(Session::has('username')){
+                    Session::forget('username');
+                }
+                if(Session::has('itemname')){
+                    Session::forget('itemname');
+                }
+                $orders = UserOrder::where('userid','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }
+            /*if(array_key_exists('username',$request->input('UserOrder'))){
+                $keywords = $request->input('UserOrder')['username'];
+                Session::put('username',$keywords);
+                if(Session::has('itemname')){
+                    Session::forget('itemname');
+                }
+                if(Session::has('userid')){
+                    Session::forget('userid');
+                }
+                $orders = UserOrder::where('username','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }*/
+
+            if(array_key_exists('username',$request->input('UserOrder')) || array_key_exists('status',$request->input('UserOrder')) || array_key_exists('date',$request->input('UserOrder'))) {
+                $username = $request->input('UserOrder')['username'];
+                $status = $request->input('UserOrder')['status'];
+                $date = $request->input('UserOrder')['date'];
+                //先把之前的Session删掉
+                if (Session::has('itemname')) {
+                    Session::forget('itemname');
+                }
+                if (Session::has('userid')) {
+                    Session::forget('userid');
+                }
+                //把jquery传来的日期字符串转换成真的日期
+                if($date != null){
+                    $dateArray = explode('/',$date);
+                    $month = $dateArray[0];
+                    $day = $dateArray[1];
+                    $year = $dateArray[2];
+
+                    $start = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day,$year));
+                    $end = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day + 1,$year));
+                }
+
+
+                //三个条件 所以有7种情况
+                if ($username == null && $status != null && $date != null) {
+                    Session::put('status', $status);
+                    Session::put('date', $date);
+                    $orders = UserOrder::where('status', $status)->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($username != null && $status == null && $date != null) {
+                    Session::put('username', $username);
+                    Session::put('date', $date);
+                    $orders = UserOrder::where('username','like', '%'.$username.'%')->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($username != null && $status != null && $date == null) {
+                    Session::put('username', $username);
+                    Session::put('status', $status);
+                    $orders = UserOrder::where('status', $status)->where('username','like', '%'.$username.'%')->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($username == null && $status == null && $date != null) {
+                    Session::put('date', $date);
+                    $orders = UserOrder::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($username == null && $status != null && $date == null) {
+                    Session::put('status', $status);
+                    $orders = UserOrder::where('status', $status)->Paginate(25);
+                }
+                if ($username != null && $status == null && $date == null) {
+                    Session::put('username', $username);
+                    $orders = UserOrder::where('username','like', '%'.$username.'%')->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($username == null && $status == null && $date == null) {
+                    $orders = UserOrder::orderBy('created_at','desc')->Paginate(25);
+                }
+            }
+
+        }
+
         $orderForStatus = new UserOrder();
         return view('orderList',[
             'orders' => $orders,
-            'unopenedOrders'=>$unopenedOrders,
+            //'unopenedOrders'=>$unopenedOrders,
             'orderForStatus'=>$orderForStatus
         ]);
     }
 
-    //客户订单列表查询
-    public function orderListSearch(Request $request){
+    //客户订单列表查询(合并到上一个了)
+    /*public function orderListSearch(Request $request){
         //当输入为空时，返回这个
         $orders = UserOrder::orderBy('created_at','desc')->paginate(25);
         //
@@ -123,10 +286,12 @@ class UserOrderController extends Controller{
             }
         }
 
+        $orderForStatus = new UserOrder();
         return view('orderList',[
-            'orders' => $orders
+            'orders' => $orders,
+            'orderForStatus'=>$orderForStatus
         ]);
-    }
+    }*/
 
 
     //modal显示

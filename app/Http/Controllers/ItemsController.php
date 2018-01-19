@@ -240,7 +240,10 @@ class ItemsController extends Controller{
         }else{
             $records = Records::orderBy('created_at','desc')->Paginate(25);
         }*/
+        //如果是get进来的或者什么都不输入的
         $records = Records::orderBy('created_at','desc')->Paginate(25);
+
+
         if(Session::has('name')){
             $keywords = Session::get('name');
             $records = Records::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
@@ -249,10 +252,51 @@ class ItemsController extends Controller{
             $keywords = Session::get('num');
             $records = Records::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
         }
-        if(Session::has('customer')){
+        /*if(Session::has('customer')){
             $keywords = Session::get('customer');
             $records = Records::where('customer','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+        }*/
+        if(Session::has('customer') || Session::has('isPaid') || Session::has('date')){
+            $customer = Session::get('customer');
+            $isPaid = Session::get('isPaid');
+            $date = Session::get('date');
+
+            //把jquery传来的日期字符串转换成真的日期
+            if(Session::has('date') != null){
+                $dateArray = explode('/',Session::get('date'));
+                $month = $dateArray[0];
+                $day = $dateArray[1];
+                $year = $dateArray[2];
+
+                $start = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day,$year));
+                $end = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day + 1,$year));
+            }
+            //三个条件 七种情况
+            if ($customer == null && $isPaid != null && $date != null) {
+                $records = Records::where('isPaid', $isPaid)->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($customer != null && $isPaid == null && $date != null) {
+                $records = Records::where('customer','like', '%'.$customer.'%')->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($customer != null && $isPaid != null && $date == null) {
+                $records = Records::where('isPaid', $isPaid)->where('customer','like', '%'.$customer.'%')->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($customer == null && $isPaid == null && $date != null) {
+                $records = Records::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($customer == null && $isPaid != null && $date == null) {
+                $records = Records::where('isPaid', $isPaid)->Paginate(25);
+            }
+            if ($customer != null && $isPaid == null && $date == null) {
+                $records = Records::where('customer','like', '%'.$customer.'%')->orderBy('created_at', 'desc')->Paginate(25);
+            }
+            if ($customer == null && $isPaid == null && $date == null) {
+                $records = Records::orderBy('created_at','desc')->Paginate(25);
+            }
+
         }
+
+
         if($request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];
@@ -262,6 +306,12 @@ class ItemsController extends Controller{
                 }
                 if(Session::has('customer')){
                     Session::forget('customer');
+                }
+                if(Session::has('isPaid')){
+                    Session::forget('isPaid');
+                }
+                if(Session::has('date')){
+                    Session::forget('date');
                 }
                 $records = Records::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }
@@ -274,9 +324,15 @@ class ItemsController extends Controller{
                 if(Session::has('customer')){
                     Session::forget('customer');
                 }
+                if(Session::has('isPaid')){
+                    Session::forget('isPaid');
+                }
+                if(Session::has('date')){
+                    Session::forget('date');
+                }
                 $records = Records::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
             }
-            if(array_key_exists('customer',$request->input('Search'))){
+            /*if(array_key_exists('customer',$request->input('Search'))){
                 $keywords = $request->input('Search')['customer'];
                 Session::put('customer',$keywords);
                 if(Session::has('name')){
@@ -286,6 +342,62 @@ class ItemsController extends Controller{
                     Session::forget('num');
                 }
                 $records = Records::where('customer','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
+            }*/
+            //第三种搜索有七种情况
+            if(array_key_exists('customer',$request->input('Search')) || array_key_exists('isPaid',$request->input('Search')) || array_key_exists('date',$request->input('Search'))) {
+                $customer = $request->input('Search')['customer'];
+                $isPaid = $request->input('Search')['isPaid'];
+                $date = $request->input('Search')['date'];
+                //先把之前的Session删掉
+                if (Session::has('name')) {
+                    Session::forget('name');
+                }
+                if (Session::has('num')) {
+                    Session::forget('num');
+                }
+                //把jquery传来的日期字符串转换成真的日期
+                if($date != null){
+                    $dateArray = explode('/',$date);
+                    $month = $dateArray[0];
+                    $day = $dateArray[1];
+                    $year = $dateArray[2];
+
+                    $start = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day,$year));
+                    $end = date('Y-m-d H:i:s',mktime(0,0,0,$month,$day + 1,$year));
+                }
+
+
+                //三个条件 所以有7种情况
+                if ($customer == null && $isPaid != null && $date != null) {
+                    Session::put('isPaid', $isPaid);
+                    Session::put('date', $date);
+                    $records = Records::where('isPaid', $isPaid)->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($customer != null && $isPaid == null && $date != null) {
+                    Session::put('customer', $customer);
+                    Session::put('date', $date);
+                    $records = Records::where('customer','like', '%'.$customer.'%')->where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($customer != null && $isPaid != null && $date == null) {
+                    Session::put('customer', $customer);
+                    Session::put('isPaid', $isPaid);
+                    $records = Records::where('isPaid', $isPaid)->where('customer','like', '%'.$customer.'%')->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($customer == null && $isPaid == null && $date != null) {
+                    Session::put('date', $date);
+                    $records = Records::where('created_at','>',$start)->where('created_at','<',$end)->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($customer == null && $isPaid != null && $date == null) {
+                    Session::put('isPaid', $isPaid);
+                    $records = Records::where('isPaid', $isPaid)->Paginate(25);
+                }
+                if ($customer != null && $isPaid == null && $date == null) {
+                    Session::put('customer', $customer);
+                    $records = Records::where('customer','like', '%'.$customer.'%')->orderBy('created_at', 'desc')->Paginate(25);
+                }
+                if ($customer == null && $isPaid == null && $date == null) {
+                    $records = Records::orderBy('created_at','desc')->Paginate(25);
+                }
             }
         }
         return view('record_take',[
@@ -366,15 +478,26 @@ class ItemsController extends Controller{
         }else{
             $items = Items::orderBy('created_at','desc')->Paginate(25);
         }*/
+        //如果是什么都没有输入 或者get 显示全部
         $items = Items::orderBy('created_at','desc')->Paginate(25);
+
+        if($request->input('all')){
+            Session::forget('itemname');
+            Session::forget('userid');
+            Session::forget('username');
+            Session::forget('status');
+            Session::forget('date');
+            Session::forget('c_item_name');
+            $items = Items::orderBy('created_at','desc')->paginate(25);
+        }
         if(Session::has('c_item_name')){
             $keywords = Session::get('c_item_name');
             $items = Items::where('name','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
         }
-        if(Session::has('c_item_num')){
+        /*if(Session::has('c_item_num')){
             $keywords = Session::get('c_item_num');
             $items = Items::where('code','like','%'.$keywords.'%')->orderBy('created_at','desc')->Paginate(25);
-        }
+        }*/
         if($request->input('Search')){
             if(array_key_exists('name',$request->input('Search'))){
                 $keywords = $request->input('Search')['name'];

@@ -42,7 +42,7 @@ Route::any('itemList',['uses'=>'ItemsController@itemList']);
 /*Route::get('userOrder/{id}',['uses'=>'UserOrderController@userOrder']);*/
 Route::post('orderLogic',['uses'=>'UserOrderController@orderLogic']);
 //客户订单列表
-Route::get('orderList',['uses'=>'UserOrderController@orderList']);
+Route::any('orderList',['uses'=>'UserOrderController@orderList']);
 Route::post('orderListSearch',['uses'=>'UserOrderController@orderListSearch']);
 //客户订单页面的修改
 Route::resource('orderListEdit', 'UserOrderController', ['only' => [

@@ -3,8 +3,19 @@
 用于展示用户提取记录
 
 -->
-
 @extends('common/layout')
+
+@section('javascript')
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+    $(function() {
+        $( "#datepicker" ).datepicker();
+    });
+</script>
+@stop
+
 @section('body')
 <!--返回首页按钮-->
 @include('common/back')
@@ -30,11 +41,17 @@
                     <input class="form-control"  placeholder="通过商品号码查询" style="width: 300px" name="Search[num]">
                     <button type="submit" class="btn btn-default">查询</button>
                 </form>
-            </div>
-            <div class="input-group" >
+            </div><br>
+            <div class="input-group" style="margin-top: 5px">
                 <form class="form-inline" method="post" action="">
                     {{csrf_field()}}
                     <input class="form-control"  placeholder="通过顾客名字查询" style="width: 300px" name="Search[customer]">
+                    <input type="text" id="datepicker" class="form-control" placeholder="提货日期" name="Search[date]">
+                    <select class="form-control" name="Search[isPaid]">
+                        <option value="0">未付款</option>
+                        <option value="1">已付款</option>
+                        <option value="">全部</option>
+                    </select>
                     <button type="submit" class="btn btn-default">查询</button>
                 </form>
             </div>
@@ -57,6 +74,7 @@
             <th>商品号码</th>
             <th>单价(美元)</th>
             <th>提取数量</th>
+            <th>合计</th>
             <th>提取客户</th>
             <th>备注</th>
             <th>提取时间</th>
@@ -67,7 +85,7 @@
         <tbody>
         @foreach($records as $record)
         <tr>
-            <td class="col-sm-4">{{$record->name}}
+            <td class="col-sm-3">{{$record->name}}
                 @if($record->isPaid == 0)
                 <span class="label label-default">未付款</span>
                 @endif
@@ -79,6 +97,7 @@
                 @endif
             </td>
             <td class="col-sm-1">{{$record->quantity}}</td>
+            <td class="col-sm-1">${{$record->totalPrice}}</td>
             <td class="col-sm-1">{{$record->customer}}</td>
             <td class="col-sm-1">{{$record->comment}}</td>
             <td class="col-sm-1">{{date('Y-m-d',strtotime($record->created_at))}}</td>

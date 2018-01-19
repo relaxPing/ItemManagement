@@ -116,6 +116,7 @@
                 <div class="input-group" >
                     <form class="form-inline" method="post" action="">
                         {{csrf_field()}}
+                        <input class="hide" name="all" value="all">
                         <button type="submit" class="btn btn-default">显示全部</button>
                     </form>
                 </div>
