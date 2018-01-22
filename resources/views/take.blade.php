@@ -37,6 +37,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-sm-2" for="quantity">备注：</label>
+                <div class="col-sm-10">
+                    <input  class="form-control" id="comment" name="Items[comment]" value="" placeholder="选填(付款方式+操作员)">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-sm-2" for="quantity">提取数量：</label>
                 <div class="col-sm-10">
                     <input  class="form-control" id="quantity" name="Items[quantity]" value="">
