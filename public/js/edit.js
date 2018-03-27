@@ -1,7 +1,7 @@
 /**
  * Created by X.P on 1/16/2018.
  */
-$(document).ready(function () {
+    $(document).ready(function () {
     url = 'orderListEdit/';
     $.ajaxSetup({
         headers: {
