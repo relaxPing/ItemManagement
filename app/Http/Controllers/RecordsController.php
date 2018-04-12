@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Items;
 use App\Records;
 use Illuminate\Http\Request;
 
@@ -32,12 +33,20 @@ class RecordsController extends Controller{
 
             //修改数据
             $data = $request->input('Records');
+            //查一下之前record的数量
+            $prevQuantity = $record ->quantity;
             $record -> quantity = $data['quantity'];
             $record -> isPaid = $data['isPaid'];
             $record -> customer = $data['customer'];
             $record -> comment = $data['comment'];
             $record -> totalPrice = $record -> quantity * $record -> finalPrice;
             if($record->save()){
+                //算一下quantity的差别,并在商品里面给改掉
+                $diff = $data['quantity'] - $prevQuantity;
+                $itemCode = $record -> code;
+                $item = Items::where('code',$itemCode) -> first();
+                $item -> quantity = $item -> quantity - $diff;
+                $item -> save();
                 return redirect('record_take')->with('success','修改成功');
             }
         }

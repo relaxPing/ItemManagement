@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use App\Adds;
 use App\Items;
 use App\Records;
+use App\Records_add;
 use Illuminate\Http\Request;
 use Session;
 
@@ -63,6 +64,7 @@ class ItemsController extends Controller{
             $record['code'] = $data['code'];
             $record['finalPrice'] = $data['finalPrice'];
             $record['quantity'] = $data['quantity'];
+            $record['quantity_current'] = $data['quantity'];
             if(Items::create($data)&& Adds::create($record)){
                 return redirect('items')->with('success','成功新建商品');
             }else{
@@ -148,6 +150,7 @@ class ItemsController extends Controller{
                 $record['code'] = $Item->code;
                 $record['finalPrice'] = $Item->finalPrice;
                 $record['quantity'] = $data['quantity'];
+                $record['quantity_current'] = Items::where('code',$Item->code)->first()->quantity + $data['quantity'];
                 $add = Adds::create($record);
                 if($Item ->save() && $add->save() ){
                     return redirect('items')->with('success','商品录入成功');
@@ -405,6 +408,14 @@ class ItemsController extends Controller{
         ]);
     }
 
+    //商品进货记录
+    public function record_add(Request $request){
+        $records = Records_add::orderBy('created_at','desc')->Paginate(25);
+        return view('record_add',[
+            'records'=>$records
+        ]);
+    }
+
     //商品修改
     public function modify(Request $request,$id){
         $item = Items::find($id);
@@ -430,6 +441,7 @@ class ItemsController extends Controller{
 
             //修改数据
             $data = $request->input('Items');
+            //修改之前的数量
             $item -> code = $data['code'];
             $item -> name = $data['name'];
             $item -> quantity = $data['quantity'];

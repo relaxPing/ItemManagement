@@ -19,6 +19,9 @@ Route::get('dashboard', ['uses'=>'DashboardController@dashboard']);
 Route::any('items',['uses'=>'ItemsController@items']);
 Route::any('record_take',['uses'=>'ItemsController@record_take']);
 
+//进货记录展示
+Route::any('record_add',['uses' => 'ItemsController@record_add']);
+
 Route::group(['middleware'=>'web'],function (){
     Route::any('create',['uses'=>'ItemsController@create']);
     Route::any('add',['uses'=>'ItemsController@add']);
