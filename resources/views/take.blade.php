@@ -45,13 +45,13 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="quantity">提取数量：</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="quantity" name="Items[quantity]" value="">
+                    <input  class="form-control" id="quantity" name="Items[quantity]" value="1">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="code">条码号：</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="code" name="Items[code]" value="">
+                    <input  class="form-control" id="code" name="Items[code]" value="" autofocus>
                 </div>
             </div>
             <div class="form-group">

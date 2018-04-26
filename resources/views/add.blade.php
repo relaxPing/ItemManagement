@@ -16,13 +16,13 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="quantity">录入数量：</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="quantity" name="Items[quantity]" value="{{old('Items')['quantity']}}">
+                    <input  class="form-control" id="quantity" name="Items[quantity]" value="{{old('Items')['quantity']?old('Items')['quantity']:1}}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2" for="code">条码号：</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="code" name="Items[code]" value="{{old('Items')['code']}}">
+                    <input  class="form-control" id="code" name="Items[code]" value="{{old('Items')['code']}}" autofocus>
                 </div>
             </div>
             <div class="form-group">
@@ -37,4 +37,5 @@
 
 <!--错误信息-->
 @include('common/validator')
+@include('common/message')
 @stop

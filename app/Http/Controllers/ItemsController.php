@@ -153,7 +153,9 @@ class ItemsController extends Controller{
                 $record['quantity_current'] = Items::where('code',$Item->code)->first()->quantity + $data['quantity'];
                 $add = Adds::create($record);
                 if($Item ->save() && $add->save() ){
-                    return redirect('items')->with('success','商品录入成功');
+                    $currentQuantity = Items::where('code',$itemCode) -> first()->quantity;
+                    Session::flash('success','商品：'.$Item->name.',成功录入：'.$data['quantity'].'个,现库存:'.$currentQuantity);
+                    return redirect()->back();
                 }else{
                     return redirect('items')->with('error','商品录入失败');
                 }
@@ -210,8 +212,12 @@ class ItemsController extends Controller{
                     $Item = Items::where('code',$code)->first();
                     $Item -> quantity = $Item -> quantity - $data['quantity'];
                     if($Item ->save()){
+                        $tookQuantity = $data['quantity'];
+                        $currentQuantity = Items::where('code',$code) ->first()->quantity;
+                        $itemName = Items::where('code',$code) ->first() -> name;
                         /*return redirect('record_take')->with('success','商品提取成功');*/
-                        return redirect()->back()->with('success','商品提取成功')->withInput();
+                        Session::flash('success','成功提取:'.$tookQuantity.'个 '.$itemName.' ,该商品剩余'.$currentQuantity);
+                        return redirect()->back()->withInput();
                     }else{
                         return redirect('items')->with('error','商品提取失败');
                     }
