@@ -81,7 +81,7 @@ class RecordsController extends Controller{
                     $code = Session::get('record_add_code');
                     $query -> where('code','like','%'.$code.'%');
                 }
-        })->Paginate(5);
+        })->Paginate(50);
         if($request -> isMethod('post')){
             if(Session::has('record_add_name')){
                 Session::forget('record_add_name');
@@ -108,7 +108,7 @@ class RecordsController extends Controller{
                     $code = Session::get('record_add_code');
                     $query -> where('code','like','%'.$code.'%');
                 }
-            })->orderBy('created_at','desc')->Paginate(5);
+            })->orderBy('created_at','desc')->Paginate(50);
         }
 
         return view('record_add',[
