@@ -414,13 +414,6 @@ class ItemsController extends Controller{
         ]);
     }
 
-    //商品进货记录
-    public function record_add(Request $request){
-        $records = Records_add::orderBy('created_at','desc')->Paginate(25);
-        return view('record_add',[
-            'records'=>$records
-        ]);
-    }
 
     //商品修改
     public function modify(Request $request,$id){
@@ -447,7 +440,7 @@ class ItemsController extends Controller{
 
             //修改数据
             $data = $request->input('Items');
-            //修改之前的数量
+
             $item -> code = $data['code'];
             $item -> name = $data['name'];
             $item -> quantity = $data['quantity'];

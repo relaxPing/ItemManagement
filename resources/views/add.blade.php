@@ -6,7 +6,7 @@
 @section('body')
 <!--返回首页按钮-->
 @include('common/back')
-
+<a href="{{url('record_add')}}"><button class="btn btn-basic btn-mid" style="margin: 10px 0px">查看进货记录</button></a>
 <!--商品录入-->
 <div class="panel panel-default" style="width: 800px">
     <div class="panel-heading">商品录入</div>

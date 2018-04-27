@@ -9,7 +9,9 @@ namespace App\Http\Controllers;
 
 use App\Items;
 use App\Records;
+use App\Records_add;
 use Illuminate\Http\Request;
+use Session;
 
 class RecordsController extends Controller{
     //商品提取记录修改
@@ -52,6 +54,65 @@ class RecordsController extends Controller{
         }
         return view('modifyRecord',[
             'record'=>$record
+        ]);
+    }
+
+    //商品进货记录
+    public function record_add(Request $request){
+        //如果是没有page参数 说明是第一页 清一下参数
+        if(!$request ->get('page')){
+            if(Session::has('record_add_name')){
+                Session::forget('record_add_name');
+            }
+            if(Session::has('record_add_code')){
+                Session::forget('record_add_code');
+            }
+        }
+
+        $records = Records_add::orderBy('created_at','desc')->
+            where(function($query)use($request){
+                if(Session::has('record_add_name')){
+                    $name = Session::get('record_add_name');
+                    $query -> where('name','like','%'.$name.'%');
+                }
+                })->
+            where(function($query)use($request){
+                if(Session::has('record_add_code')){
+                    $code = Session::get('record_add_code');
+                    $query -> where('code','like','%'.$code.'%');
+                }
+        })->Paginate(5);
+        if($request -> isMethod('post')){
+            if(Session::has('record_add_name')){
+                Session::forget('record_add_name');
+            }
+            if(Session::has('record_add_code')){
+                Session::forget('record_add_code');
+            }
+
+            if(isset($request -> input('Search')['name']) && $request -> input('Search')['name']){
+                Session::put('record_add_name',$request -> input('Search')['name']);
+            }
+            if(isset($request -> input('Search')['code']) && $request -> input('Search')['code']){
+                Session::put('record_add_code',$request -> input('Search')['code']);
+            }
+
+            $records = Records_add::where(function($query)use($request){
+                if(Session::has('record_add_name')){
+                    $name = Session::get('record_add_name');
+                    $query -> where('name','like','%'.$name.'%');
+                }
+            })->
+            where(function($query)use($request){
+                if(Session::has('record_add_code')){
+                    $code = Session::get('record_add_code');
+                    $query -> where('code','like','%'.$code.'%');
+                }
+            })->orderBy('created_at','desc')->Paginate(5);
+        }
+
+        return view('record_add',[
+            'records'=>$records
         ]);
     }
 }
